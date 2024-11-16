@@ -2,7 +2,7 @@
 # Определите какие вещи влезут в рюкзак передав его максимальную грузоподъёмность.
 # Достаточно вернуть один допустимый вариант.*Верните все возможные варианты комплектации рюкзака.
 
-
+# Словарь вещей которые можно взять с собой и их масса
 things_for_hike = {
     'палатка': 3.5,
     'спальный мешок': 1.8,
@@ -13,33 +13,30 @@ things_for_hike = {
     'зажигалка': 0.05,
 }
 
-max_mass = 8
+max_mass = 8 # Максимальная масса вещей которые можно взять
 list_items = things_for_hike.keys()
-res_dict = dict()
+res_dict = dict() # результирующий список
 
 for i in list_items:
-    timer_list = set()
+    timer_list = set() # Инициализирую множество, так как нужен перечень уникальных вещей
     timer_list.add(i)
-    list_mass = []
+    list_mass = [] # инициализирую список, в который буду записывать массу вещей
     list_mass.append(things_for_hike[i])
-    for j in list_items:
+
+    for j in list_items: #Цикл сочетаний всех возможных вещей
         if i != j and (sum(list_mass)+things_for_hike[j]) <= max_mass:
             timer_list.add(j)
-            for k in list(timer_list):
+
+            for k in list(timer_list): # Перебираю множество и сравниваю их суммарную массу с предельной допустимой массой
 
                 if (sum(list_mass)+things_for_hike[k]) <= max_mass:
                     list_mass.append(things_for_hike[k])
                 else:
                     break
+                    
     if sum(list_mass) <= max_mass:
-        res_dict[sum(list_mass)] = timer_list
+        res_dict[sum(list_mass)] = timer_list #записываю суммарную массу в словарь как ключ а в значения множество вещей
 
 
 for i in res_dict:
     print(f"{res_dict[i]}: {i}")
-
-
-            
-            
-
-
