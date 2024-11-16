@@ -1,0 +1,45 @@
+# Создайте словарь со списком вещей для похода в качестве ключа и их массой в качестве значения.
+# Определите какие вещи влезут в рюкзак передав его максимальную грузоподъёмность.
+# Достаточно вернуть один допустимый вариант.*Верните все возможные варианты комплектации рюкзака.
+
+
+things_for_hike = {
+    'палатка': 3.5,
+    'спальный мешок': 1.8,
+    'коврик для сна': 0.6,
+    'еда': 2.0,
+    'вода': 1.5,
+    'фонарик': 0.2,
+    'зажигалка': 0.05,
+}
+
+max_mass = 8
+list_items = things_for_hike.keys()
+res_dict = dict()
+
+for i in list_items:
+    timer_list = set()
+    timer_list.add(i)
+    list_mass = []
+    list_mass.append(things_for_hike[i])
+    for j in list_items:
+        if i != j and (sum(list_mass)+things_for_hike[j]) <= max_mass:
+            timer_list.add(j)
+            for k in list(timer_list):
+
+                if (sum(list_mass)+things_for_hike[k]) <= max_mass:
+                    list_mass.append(things_for_hike[k])
+                else:
+                    break
+    if sum(list_mass) <= max_mass:
+        res_dict[sum(list_mass)] = timer_list
+
+
+for i in res_dict:
+    print(f"{res_dict[i]}: {i}")
+
+
+            
+            
+
+
