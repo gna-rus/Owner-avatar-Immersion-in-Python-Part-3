@@ -40,11 +40,11 @@ text = 'Сюжет "В погоне за Бонни и Клайдом". В 1934 
        'в Аркейдию (Луизиана), где его окружает толпа истеричных зевак. Отказавшись от предложения прессы дать интервью по телефону за 1 000 долларов, Хеймер и Голт спокойно едут домой. '
 
 
-def remove_punctuation_and_lower_case(text):
+def remove_punctuation_and_lower(text):
     """
-    Функция для удаления знаков препинания и уменьшения регистра
+    Функция для удаления знаков препинания и уменьшения регистра во всем тексте
     """
-    punctuation_chars = set(string.punctuation)
+    punctuation_chars = set(string.punctuation) # Перечень всех знаком и символов
     result = []
     for char in text:
         if char not in punctuation_chars:
@@ -56,11 +56,11 @@ def get_most_common_words(text, n=10):
     Функция для посчета количества различных слов в тексте
     """
     # Убираем знаки препинания и переводим все символы в нижний регистр
-    text = remove_punctuation_and_lower_case(text)
+    text = remove_punctuation_and_lower(text)
 
     words = text.split()
 
-    word_counts = {} # ключ это слово а значение - количество раз которое слово встречается в тексте
+    word_counts = {} # словарь в котором будет ключ - это слово а значение - количество раз которое слово встречается в тексте
 
     for word in words:
         if word not in word_counts:
