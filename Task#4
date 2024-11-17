@@ -3,40 +3,53 @@
 # Достаточно вернуть один допустимый вариант.*Верните все возможные варианты комплектации рюкзака.
 
 # Словарь вещей которые можно взять с собой и их масса
-things_for_hike = {
+# Словарь с вещами и их массой
+items = {
     'палатка': 3.5,
-    'спальный мешок': 1.8,
-    'коврик для сна': 0.6,
-    'еда': 2.0,
-    'вода': 1.5,
-    'фонарик': 0.2,
-    'зажигалка': 0.05,
+    'спальный мешок': 1.5,
+    'питьевая вода': 1.0,
+    'еда': 3.0,
+    'вода': 4,
+    'фонарь': 0.5,
+    'аптечка': 0.3,
+    'компас': 0.1,
+    'лопатка': 1,
+    'удочка': 1.2
 }
 
-max_mass = 8 # Максимальная масса вещей которые можно взять
-list_items = things_for_hike.keys()
-res_dict = dict() # результирующий список
+# Максимальная грузоподъемность рюкзака в килограммах
+max_weight = 4.0
 
-for i in list_items:
-    timer_list = set() # Инициализирую множество, так как нужен перечень уникальных вещей
-    timer_list.add(i)
-    list_mass = [] # инициализирую список, в который буду записывать массу вещей
-    list_mass.append(things_for_hike[i])
+# Функция для нахождения всех возможных вариантов комплектации рюкзака
+def find_combinations(items, max_weight):
+    valid_combinations = []
+    item_list = list(items.items())
 
-    for j in list_items: #Цикл сочетаний всех возможных вещей
-        if i != j and (sum(list_mass)+things_for_hike[j]) <= max_mass:
-            timer_list.add(j)
+    def backtrack(start, current_combination, current_weight):
+        """
+        Функция подбора комплекта вещей. Подбор осуществляется методом перебора через рекурсию
+        """
+        if current_weight <= max_weight:
+            valid_combinations.append(current_combination[:])
 
-            for k in list(timer_list): # Перебираю множество и сравниваю их суммарную массу с предельной допустимой массой
+        # Перебираем оставшиеся вещи
+        for i in range(start, len(item_list)):
+            item, weight = item_list[i]
+            current_combination.append(item)
+            backtrack(i + 1, current_combination, current_weight + weight)  # Рекурсивный вызов
+            current_combination.pop()  # Убираем последний элемент для следующей итерации
 
-                if (sum(list_mass)+things_for_hike[k]) <= max_mass:
-                    list_mass.append(things_for_hike[k])
-                else:
-                    break
-                    
-    if sum(list_mass) <= max_mass:
-        res_dict[sum(list_mass)] = timer_list #записываю суммарную массу в словарь как ключ а в значения множество вещей
+    backtrack(0, [], 0)  # Начинаем с первого элемента
+    return valid_combinations
+
+# Находим все допустимые варианты комплектации рюкзака. Заполнение рюкзока осуществлялось недо предела. Перебераются вообще все возможные варианты массой не более max_weight
+valid_combinations = find_combinations(items, max_weight)
 
 
-for i in res_dict:
-    print(f"{res_dict[i]}: {i}")
+# Выводим все найденные варианты
+for i in range(1, len(valid_combinations)):
+    total_weight = sum(items[item] for item in valid_combinations[i])
+    print(f"Вариант {i}: {valid_combinations[i]}, общий вес: {total_weight} кг")          
+            
+
+
